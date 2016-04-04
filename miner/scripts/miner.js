@@ -17,9 +17,10 @@ var gameCreator = {
             this.gameTable = document.createElement("table");
             this.gameTable.className = "game-table";
             this.gameTable.insertRow(0);
-            // <caption> - timer and bomb counter
-            this.gameField = this.gameTable.rows[0].insertCell(0); //ячейка для вставки нового сгенерированного поля
-            this.gameField.className = "game-field"; // class="game-field"
+            this.gameTable.insertRow(1);
+
+            this.bombsLeft = this.gameTable.rows[0].insertCell(0);
+            this.gameField = this.gameTable.rows[1].insertCell(0);
 
             this.game.appendChild(this.gameTable);
         }
@@ -42,6 +43,7 @@ var gameCreator = {
     generateField: function() {
         var self = this;
         var table = document.createElement("table");
+        this.bombsLeft.innerHTML = "Bombs left: " + this.placedBombs;
 
         for (var i = 0; i < this.height; i++) {
             var row = table.insertRow(i);
@@ -49,6 +51,7 @@ var gameCreator = {
                 var cell = row.insertCell(j);
                 cell.num = 0;
                 cell.index = [i, j];
+
                 cell.leftClick = function() {
                     self.showInfo(this);
                 };
@@ -119,12 +122,12 @@ var gameCreator = {
         }
     },
 
-    showInfo: function(elem) { //в качестве параметра - элемент на котором кликнули
+    showInfo: function(elem) {
         if (!elem.bomb) {
             if (elem.num > 0) {
                 this.openCell(elem);
             } else {
-                this.roll(elem.index[1], elem.index[0]); // открывает каскадом
+                this.roll(elem.index[1], elem.index[0]);
             }
         } else {
             this.openCell(elem);
@@ -136,20 +139,24 @@ var gameCreator = {
         var marked = false;
         if (!elem.marked) {
             elem.innerHTML = "<b>&#9873</b>"; // flag unicode
+            this.bombsLeft.innerHTML = "Bombs left: " + --this.bombs;
             elem.marked = true;
             elem.removeEventListener("click", elem.leftClick);
 
         } else if (elem.marked) {
             elem.innerHTML = "<b>" + " " + "</b>";
+            this.bombsLeft.innerHTML = "Bombs left: " + ++this.bombs;
             elem.marked = false;
             elem.addEventListener("click", elem.leftClick);
         }
+        return false;
     },
 
     openCell: function(elem) {
         if (!elem.bomb) {
             if (elem.num > 0) {
                 elem.innerHTML = '<b>' + elem.num + '</b>';
+                elem.removeEventListener("contextmenu", elem.rightClick);
             } else {
                 elem.innerHTML = ' ';
             }
@@ -183,7 +190,7 @@ var gameCreator = {
                     elem.style.color = 'black';
             }
         } else {
-            elem.innerHTML = '<b>&#128163</b>'; // bomb unicode (&#x1f4a3)
+            elem.innerHTML = '<b>&#128163</b>'; // bomb unicode
         }
         elem.style.background = '#d8e0ec';
     },
@@ -194,12 +201,11 @@ var gameCreator = {
                 if (this.board.rows[i].cells[j].bomb) {
                     this.openCell(this.board.rows[i].cells[j]);
                 }
+                this.board.rows[i].cells[j].removeEventListener("contextmenu", this.board.rows[i].cells[j].rightClick);
                 this.board.rows[i].cells[j].removeEventListener("click", this.board.rows[i].cells[j].leftClick);
-                this.board.rows[i].cells[j].removeEventListener("contextmenu", this.board.rows[i].cells[j].righClick);
             }
         }
-
-        alert("Game Over");
+        alert("Game over!!!");
     },
 
     roll: function(x, y) {
@@ -208,6 +214,7 @@ var gameCreator = {
         }
 
         this.openCell(this.board.rows[y].cells[x]);
+        this.board.rows[y].cells[x].removeEventListener("contextmenu", this.board.rows[y].cells[x].rightClick);
 
         if (this.board.rows[y].cells[x].num > 0) {
             this.board.rows[y].cells[x].innerHTML = '<b>' + this.board.rows[y].cells[x].num + '</b>';
