@@ -17,7 +17,7 @@ var gameCreator = {
             this.gameTable = document.createElement("table");
             this.gameTable.className = "game-table";
             this.gameTable.insertRow(0);
-
+            // <caption> - timer and bomb counter
             this.gameField = this.gameTable.rows[0].insertCell(0); //ячейка для вставки нового сгенерированного поля
             this.gameField.className = "game-field"; // class="game-field"
 
@@ -51,14 +51,17 @@ var gameCreator = {
                 cell.index = [i, j];
                 cell.leftClick = function() {
                     self.showInfo(this);
-                }
-                cell.addEventListener("click", cell.leftClick);
+                };
                 cell.rightClick = function() {
                     self.markBomb(this);
-                }
-                cell.addEventListener("contextmenu", cell.rightClick);
+                    return false;
+                };
+
+                cell.addEventListener("click", cell.leftClick);
+                cell.addEventListener("contextmenu", cell.rightClick, false);
             }
         }
+
 
         do {
             var hNum = this.rand(0, this.height - 1);
@@ -130,34 +133,17 @@ var gameCreator = {
     },
 
     markBomb: function(elem) {
-        elem.marked = false;
-
-
-        // for (var i = 0, len1 = this.board.rows.length; i < len1; i++) {
-        //        for (var j = 0, len2 = this.board.rows[i].cells.length; j < len2; j++) {
-
-        //        	if (!this.board.rows[i].cells[j].marked) {
-        //        		elem.innerHTML = "<b>&#9873</b>";  // flag unicode
-        //        		this.board.rows[i].cells[j].removeEventListener("click", this.board.rows[i].cells[j].leftClick);
-        //        		this.board.rows[i].cells[j].marked = true;
-        //        	}
-        //        	if (this.board.rows[i].cells[j].marked) {
-        //        		elem.innerHTML = "<b>" + " "  + "</b>";;  // flag unicode
-        //        		//this.board.rows[i].cells[j].removeEventListener("click", this.board.rows[i].cells[j].leftClick);
-        //        		this.board.rows[i].cells[j].marked = false;
-        //        	}
-        //        }
-        //    }
-
-        if(elem.marked){
-            elem.innerHTML = "<b>" + " "  + "</b>";
-            elem.marked = false;
-        }
-        if (elem.marked) {
-            elem.innerHTML = "<b>&#9873</b>";  // flag unicode
+        var marked = false;
+        if (!elem.marked) {
+            elem.innerHTML = "<b>&#9873</b>"; // flag unicode
             elem.marked = true;
-        }
+            elem.removeEventListener("click", elem.leftClick);
 
+        } else if (elem.marked) {
+            elem.innerHTML = "<b>" + " " + "</b>";
+            elem.marked = false;
+            elem.addEventListener("click", elem.leftClick);
+        }
     },
 
     openCell: function(elem) {
@@ -197,7 +183,7 @@ var gameCreator = {
                     elem.style.color = 'black';
             }
         } else {
-            elem.innerHTML = '<b>&#128163</b>'; // bomb unicode
+            elem.innerHTML = '<b>&#128163</b>'; // bomb unicode (&#x1f4a3)
         }
         elem.style.background = '#d8e0ec';
     },
@@ -208,19 +194,12 @@ var gameCreator = {
                 if (this.board.rows[i].cells[j].bomb) {
                     this.openCell(this.board.rows[i].cells[j]);
                 }
-
-                //Event.remove(this.board.rows[i].cells[j], 'click', this.board.rows[i].cells[j].clickHandler);
                 this.board.rows[i].cells[j].removeEventListener("click", this.board.rows[i].cells[j].leftClick);
+                this.board.rows[i].cells[j].removeEventListener("contextmenu", this.board.rows[i].cells[j].righClick);
             }
         }
 
-        // this.gameStats.style.background = 'red';
-        // this.gameStats.innerHTML = '<b>БАБАХ!!! GAME OVER!</b>';
-        var divGameOver = '<div id="game-over" class="game-over"></div>';
-        document.createElement(divGameOver);
-        divGameOver.innerHTML = "Game Over";
-        divGameOver.style.color = "red";
-        this.gameField.appendChild(divGameOver);
+        alert("Game Over");
     },
 
     roll: function(x, y) {
