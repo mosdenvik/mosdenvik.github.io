@@ -243,9 +243,6 @@ var gameCreator = {
 };
 
 
-
-
-
 document.getElementById("start-button").onclick = function() {
 
     var levelBeginner = document.getElementById("beginner");
