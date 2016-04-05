@@ -57,7 +57,6 @@ var gameCreator = {
                 };
                 cell.rightClick = function() {
                     self.markBomb(this);
-                    return false;
                 };
 
                 cell.addEventListener("click", cell.leftClick);
@@ -149,7 +148,6 @@ var gameCreator = {
             elem.marked = false;
             elem.addEventListener("click", elem.leftClick);
         }
-        return false;
     },
 
     openCell: function(elem) {
