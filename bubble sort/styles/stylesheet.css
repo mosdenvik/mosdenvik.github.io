@@ -1,0 +1,79 @@
+.bubble{
+    width: 600px;
+    margin: 0 auto;
+}
+
+td {
+    border: 2px solid black;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    padding: 4px;
+}
+
+h1, p {
+    color: #4169E1;
+    text-align: center;
+}
+
+#nums {
+    margin: 0 auto;
+    width: 500px;
+    height: 25px;
+    border: 3px solid #6A5ACD;
+    border-radius: 5px;
+    font-size: large;
+}
+
+#enter-button {
+    background-color: #9cb0ca;
+    float: right;
+    height: 30px;
+    border: 3px solid #6A5ACD;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+#div-cell table{
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+td {
+    border: 3px solid midnightblue;
+    border-radius: 5px;
+    font-weight: bold;
+}
+#reset{
+    background-color: #9cb0ca;
+    float: left;
+    height: 30px;
+    border: 3px solid #6A5ACD;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+#forward {
+    background-color: #9cb0ca;
+    float: right;
+    height: 30px;
+    border: 3px solid #6A5ACD;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+input:hover {
+    background-color: antiquewhite;
+}
+
+#reset:hover {
+    background-color: #FFFF00;
+}
+
+#forward:hover {
+    background-color: #FFFF00;
+}
+
+#enter-button:hover {
+    background-color: #FFFF00;
+}
