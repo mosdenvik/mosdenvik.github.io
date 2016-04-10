@@ -1,23 +1,25 @@
 "use strict";
 (function() {
     var enterButton = document.getElementById("enter-button");
-    var reset = document.getElementById("reset");
-    var stepForward = document.getElementById("forward");
+    var resetButton = document.getElementById("reset");
+    var stepForwardButton = document.getElementById("forward");
 
-    var numsString = document.getElementById("nums");
-    var numsValue = numsString.value;
-    var numsArray = numsValue.split(/\s*,\s*/);
+    function createNumsRow(){
+        var numsString = document.getElementById("nums");
+        var numsValue = numsString.value;
+        var numsArray = numsValue.split(/\s*,\s*/);
 
-    function createNumsRow(array){
         var divCell = document.getElementById("div-cell");
         var numCells = document.createElement("table");
-        numCells.setAttribute("id", "num-cell");
+        numCells.setAttribute("id", "numcell");
+        numCells.setAttribute("class", "numcell");
+
         numCells.insertRow(0);
 
-        for (var i = 0; i < array.length; i++) {
-            if (!isNaN(parseFloat(array[i])) && isFinite(array[i])) {
+        for (var i = 0; i < numsArray.length; i++) {
+            if (!isNaN(parseFloat(numsArray[i])) && isFinite(numsArray[i])) {
                 var cell = numCells.rows[0].insertCell(i);
-                cell.innerHTML = array[i];
+                cell.innerHTML = numsArray[i];
             } else {
                 alert("Wrong number. Enter correct numbers!");
             }
@@ -26,27 +28,59 @@
         enterButton.disabled = true;
     }
 
-    function makeSort(array){
-        for (i = 0; i < array.length; i++){
-            if (array[i] > array[i+1]){
-                var temp = array[i+1];
-                array[i+1] = array[i];
-                array[i] = temp;
-                i = i-2;
+
+    function makeSort(){
+        var rowCellArray = document.getElementById("numcell");
+        var cellsForSort = rowCellArray.getElementsByTagName("td");
+        console.log(cellsForSort);
+        var temp;
+        var next = true;
+        for (var i = cellsForSort.length - 1; i > 0; i--){
+            for (var j = 0; j < i; j++) {
+                if ((parseInt(cellsForSort[j].innerHTML) > parseInt(cellsForSort[j + 1].innerHTML)) && next === true) {
+                    for (var k = 0; k < cellsForSort.length; k++) {
+                        cellsForSort[k].style.background = "whitesmoke";
+                    }
+                    cellsForSort[j].style.background = "red";
+                    cellsForSort[j + 1].style.background = "red";
+                    temp = cellsForSort[j].innerHTML;
+                    cellsForSort[j].innerHTML = cellsForSort[j + 1].innerHTML;
+                    cellsForSort[j + 1].innerHTML = temp;
+                    next = false;
+                }
             }
         }
+
+        //for (var i = cellsForSort.length - 1; i > 0; i--){
+        //    //next:
+        //    for (var j = 0; j < i; j++) {
+        //        cellsForSort[j].style.background = "yellow";
+        //        cellsForSort[j+1].style.background = "yellow";
+        //        //continue next;
+        //        if (parseInt(cellsForSort[j].innerHTML) > parseInt(cellsForSort[j+1])){
+        //            cellsForSort[j].style.background = "red";
+        //            cellsForSort[j+1].style.background = "red";
+        //
+        //            temp = cellsForSort[j+1];
+        //            cellsForSort[j+1] = cellsForSort[j];
+        //            cellsForSort[j] = temp;
+        //            j = j-2;
+        //            next = false;
+        //        }
+        //    }
+        //}
     }
 
     enterButton.onclick = function(){
-        createNumsRow(numsArray);
+        createNumsRow();
     }
 
-    reset.onclick = function(){
+    resetButton.onclick = function(){
         window.location.reload();
     }
 
-    stepForward.onclick = function(){
-        makeSort(numsArray);
+    stepForwardButton.onclick = function(){
+        makeSort();
     }
 
 })();
