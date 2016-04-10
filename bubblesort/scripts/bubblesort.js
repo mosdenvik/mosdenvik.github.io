@@ -32,43 +32,24 @@
     function makeSort(){
         var rowCellArray = document.getElementById("numcell");
         var cellsForSort = rowCellArray.getElementsByTagName("td");
-        console.log(cellsForSort);
-        var temp;
         var next = true;
-        for (var i = cellsForSort.length - 1; i > 0; i--){
-            for (var j = 0; j < i; j++) {
-                if ((parseInt(cellsForSort[j].innerHTML) > parseInt(cellsForSort[j + 1].innerHTML)) && next === true) {
+        var length = cellsForSort.length;
+
+        for (var i = 0; i < length; i++) {
+            for (var j = 0; j < (length - i - 1); j++) {
+                if((parseInt(cellsForSort[j].innerHTML) > parseInt(cellsForSort[j + 1].innerHTML)) && next === true) {
                     for (var k = 0; k < cellsForSort.length; k++) {
-                        cellsForSort[k].style.background = "whitesmoke";
+                        cellsForSort[k].style.background = "white";
                     }
                     cellsForSort[j].style.background = "red";
-                    cellsForSort[j + 1].style.background = "red";
-                    temp = cellsForSort[j].innerHTML;
-                    cellsForSort[j].innerHTML = cellsForSort[j + 1].innerHTML;
-                    cellsForSort[j + 1].innerHTML = temp;
+                    cellsForSort[j+1].style.background = "red";
+                    var tmp = cellsForSort[j].innerHTML;
+                    cellsForSort[j].innerHTML = cellsForSort[j+1].innerHTML;
+                    cellsForSort[j+1].innerHTML = tmp;
                     next = false;
                 }
             }
         }
-
-        //for (var i = cellsForSort.length - 1; i > 0; i--){
-        //    //next:
-        //    for (var j = 0; j < i; j++) {
-        //        cellsForSort[j].style.background = "yellow";
-        //        cellsForSort[j+1].style.background = "yellow";
-        //        //continue next;
-        //        if (parseInt(cellsForSort[j].innerHTML) > parseInt(cellsForSort[j+1])){
-        //            cellsForSort[j].style.background = "red";
-        //            cellsForSort[j+1].style.background = "red";
-        //
-        //            temp = cellsForSort[j+1];
-        //            cellsForSort[j+1] = cellsForSort[j];
-        //            cellsForSort[j] = temp;
-        //            j = j-2;
-        //            next = false;
-        //        }
-        //    }
-        //}
     }
 
     enterButton.onclick = function(){
