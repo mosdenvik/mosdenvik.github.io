@@ -13,7 +13,6 @@
         var numCells = document.createElement("table");
         numCells.setAttribute("id", "numcell");
         numCells.setAttribute("class", "numcell");
-
         numCells.insertRow(0);
 
         for (var i = 0; i < numsArray.length; i++) {
@@ -51,6 +50,7 @@
             }
         }
     }
+
 
     enterButton.onclick = function(){
         createNumsRow();
